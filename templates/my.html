@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if login %}
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="product-desc-side" style="height: auto;">
+                        <h3 class="blog-title-head"><b>我的评论</b></h3>
+                        <table class="table">
+                            <tbody>
+                            {% for rc in route_comments %}
+                                <tr>
+                                    <td>{{ rc.route_comment_content }}</td>
+                                    <td>{{ rc.route_comment_date }}</td>
+                                    <td><a class="delete_route_comment" data-id="{{ rc.route_comment_id }}"><i
+                                            class="fa fa-trash"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                            {% for hc in hotel_comments %}
+                                <tr>
+                                    <td>{{ hc.hotel_comment_content }}</td>
+                                    <td>{{ hc.hotel_comment_date }}</td>
+                                    <td><a class="delete_hotel_comment" data-id="{{ hc.hotel_comment_id }}"><i
+                                            class="fa fa-trash"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h5 class="page-header"></h5>
+                <div class="row">
+                    <div class="product-desc-side" style="height: auto;">
+                        <h3 class="blog-title-head"><b>我的自由行订单</b></h3>
+                        <table class="table">
+                            <tbody>
+                            {% for ro in route_orders %}
+                                <tr>
+                                    <td>{{ ro.route.route_name }}</td>
+                                    <td>{{ ro.name }}</td>
+                                    <td>{{ ro.tel_num }}</td>
+                                    <td><a class="delete_route_order" data-id="{{ ro.route_order_id }}"><i
+                                            class="fa fa-trash"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h5 class="page-header"></h5>
+                <div class="row">
+                    <div class="product-desc-side" style="height: auto;">
+                        <h3 class="blog-title-head"><b>我的酒店订单</b></h3>
+                        <table class="table">
+                            <tbody>
+                            {% for ho in hotel_orders %}
+                                <tr>
+                                    <td>{{ ho.hotel.hotel_name }}</td>
+                                    <td>{{ ho.start_time }}到{{ ho.end_time }}</td>
+                                    <td><a class="delete_hotel_order" data-id="{{ ho.hotel_order_id }}"><i
+                                            class="fa fa-trash"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <script>
+                    function ajax_delete(url, ele_class) {
+                        let data_id = $("." + ele_class).attr("data-id");
+                        console.log(ele_class);
+                        console.log(url);
+                        $.get(url, {
+                            data_id: data_id
+                        }, function (data) {
+                            console.log(data);
+                            window.location.reload();
+                        }, "json");
+                    }
+
+                    $(".delete_hotel_comment").click(function (){
+                     ajax_delete("deleteHotelComment", "delete_hotel_comment");
+                    });
+                    $(".delete_route_comment").click(function (){
+                     ajax_delete("deleteRouteComment", "delete_route_comment");
+                    });
+                    $(".delete_hotel_order").click(function (){
+                     ajax_delete("deleteHotelOrder", "delete_hotel_order");
+                    });
+                    $(".delete_route_order").click(function (){
+                     ajax_delete("deleteRouteOrder", "delete_route_order");
+                    });
+                </script>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    {% else %}
+        <div class="row" style="height:300px">
+            <center><h4>请先登录,返回<a href="../index">首页</a></h4></center>
+        </div>
+    {% endif %}
+{% endblock %}

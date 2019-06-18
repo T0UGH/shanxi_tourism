@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="../static/images/icons/favicon.png"/>
+        {% block title %}
+        <title>三晋之旅</title>
+        {% endblock %}
+        <!-- Bootstrap core CSS -->
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Custom styles for this template -->
+        <link href="../static/css/style.css" rel="stylesheet">
+        <link href="../static/fonts/antonio-exotic/stylesheet.css" rel="stylesheet">
+        <link rel="stylesheet" href="../static/css/lightbox.min.css">
+        <link href="../static/css/responsive.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	    <link href="../static/css/login-register.css" rel="stylesheet" />
+            <link href="../static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+        <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+        <script src="../static/js/bootstrap.min.js" type="text/javascript"></script>
+        <script>
+            function logout() {
+                $.get("../logout",function(){
+                    location.reload();
+                },"json");
+            }
+            function showRegisterForm(){
+                $('.loginBox').fadeOut('fast',function(){
+                    $('.registerBox').fadeIn('fast');
+                    $('.login-footer').fadeOut('fast',function(){
+                        $('.register-footer').fadeIn('fast');
+                    });
+                });
+                $('.error').removeClass('alert alert-danger').html('');
+
+            }
+            function showLoginForm(){
+                $('#loginModal .registerBox').fadeOut('fast',function(){
+                    $('.loginBox').fadeIn('fast');
+                    $('.register-footer').fadeOut('fast',function(){
+                        $('.login-footer').fadeIn('fast');
+                    });
+                });
+                 $('.error').removeClass('alert alert-danger').html('');
+            }
+
+            function openLoginModal(){
+                showLoginForm();
+                setTimeout(function(){
+                    $('#loginModal').modal('show');
+                }, 230);
+
+            }
+            function openRegisterModal(){
+                showRegisterForm();
+                setTimeout(function(){
+                    $('#loginModal').modal('show');
+                }, 230);
+
+            }
+
+            function loginAjax(){
+                let email = $("#l_email").val()
+                let password = $("#l_password").val()
+                let data = {
+                    email: email,
+                    password: password
+                }
+                console.log(data)
+                $.get("../login",data,function(data){
+                    if(data.ok == 1){
+                         location.reload();
+                    } else {
+                        shakeModal();
+                    }
+                },"json");
+            }
+
+            function register_ajax(){
+                let email = $("#r_email").val()
+                let password = $("#r_password").val()
+                let password_repeat = $("#r_password_confirmation").val();
+                let nickname = $("#r_nickname").val();
+                if(email.indexOf("@") != -1){
+                    shakeModal("邮箱不合法");
+                    return;
+                }
+                if(password_repeat != password){
+                    shakeModal("密码不一致");
+                    return;
+                }
+                let len = password.length
+                if(len < 8 || len > 15){
+                    shakeModal("密码长度需在8到15位之间");
+                    return;
+                }
+                let p1 = /[0-9]/; let has_num = p1.test(password);//true,说明有数字
+                let p2 = /[a-z]/i; let has_chr = p2.test(password);//true,说明有英文字母
+                if(!has_num || !has_chr){
+                    shakeModal("密码需包含数字与字母")
+                    return;
+                }
+                let data = {
+                    email: email,
+                    password: password,
+                    nickname: nickname
+                }
+                console.log(data)
+                $.get("../register",data,function(data){
+                    if(data.ok == 1){
+                         location.reload();
+                    } else {
+                        shakeModal("用户已存在");
+                    }
+                },"json");
+            }
+
+            function shakeModal(data){
+                if(data == null){
+                    data = "非法的用户名/密码"
+                }
+                $('#loginModal .modal-dialog').addClass('shake');
+                         $('.error').addClass('alert alert-danger').html(data);
+                         $('input[type="password"]').val('');
+                         setTimeout( function(){
+                            $('#loginModal .modal-dialog').removeClass('shake');
+                }, 1000 );
+            }
+        </script>
+        <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+    </head>
+    <body>
+        <div id="page">
+            <div class="top-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="social-grid">
+                                <ul class="list-unstyled text-right">
+                                    <li><a><i class="fa fa-qq"></i></a></li>
+                                    <li><a><i class="fa fa-weixin"></i></a></li>
+                                    <li><a><i class="fa fa-weibo"></i></a></li>
+                                    <li><a><i class="fa fa-facebook"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--header--->
+            <header class="header-container">
+                <div class="container">
+                    <div class="top-row">
+                        <div class="row">
+                            <div class="col-md-2 col-sm-6 col-xs-6">
+                                <div id="logo">
+                                    <!--<a href="index.html"><img src="images/logo.png" alt="logo"></a>-->
+                                    <a href="../index"><span>三晋</span>之旅</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 visible-sm">
+                                <div class="text-right"><button type="button" class="book-now-btn">Book Now</button></div>
+                            </div>
+                            <div class="col-md-8 col-sm-12 col-xs-12 remove-padd">
+                                <nav class="navbar navbar-default">
+                                    <div class="navbar-header page-scroll">
+                                        <button data-target=".navbar-ex1-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+                                            <span class="sr-only">Toggle navigation</span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                        </button>
+
+                                    </div>
+                                    <div class="collapse navigation navbar-collapse navbar-ex1-collapse remove-space">
+                                        <ul class="list-unstyled nav1 cl-effect-10">
+                                            {% ifequal active 1 %}
+                                                <li><a  data-hover="首页" href="../index" class="active"><span>首页</span></a></li>
+                                            {% else %}
+                                                <li><a  data-hover="首页" href="../index"><span>首页</span></a></li>
+                                            {% endifequal %}
+                                            {% ifequal active 2 %}
+                                                <li><a data-hover="景点"  href="../hotAttraction" class="active"><span>景点</span></a></li>
+                                            {% else %}
+                                                <li><a data-hover="景点"  href="../hotAttraction"><span>景点</span></a></li>
+                                            {% endifequal %}
+                                            {% ifequal active 4 %}
+                                                <li><a data-hover="游记"  href="../hotTravels"class="active"><span>游记</span></a></li>
+                                            {% else %}
+                                                <li><a data-hover="游记"  href="../hotTravels"><span>游记</span></a></li>
+                                            {% endifequal %}
+                                            {% ifequal active 5 %}
+                                                <li><a data-hover="酒店"  href="../hotHotel" class="active"><span>酒店</span></a></li>
+                                            {% else %}
+                                                <li><a data-hover="酒店"  href="../hotHotel"><span>酒店</span></a></li>
+                                            {% endifequal %}
+                                            {% ifequal active 6 %}
+                                                <li><a data-hover="自由行"  href="../hotRoute"class="active"><span>自由行</span></a></li>
+                                            {% else %}
+                                                <li><a data-hover="自由行"  href="../hotRoute"><span>自由行</span></a></li>
+                                            {% endifequal %}
+                                            {% ifequal active 3 %}
+                                                <li><a data-hover="我的"  href="../my" class="active"><span>我的</span></a></li>
+                                            {% else %}
+                                                <li><a data-hover="我的"  href="../my"><span>我的</span></a></li>
+                                            {% endifequal %}
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="col-md-2  col-sm-4 col-xs-12 hidden-sm">
+                                {% if login %}
+                                    <div class="text-right"><a class="book-now-btn"  href="javascript:void(0)" onclick="logout();">{{ nickname }}|注销</a></div>
+                                {% else %}
+                                    <div class="text-right"><a class="book-now-btn" data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">登陆|注册</a></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="modal fade login" id="loginModal">
+                <div class="modal-dialog login animated">
+                    <div class="modal-content">
+                       <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          <h4 class="modal-title">第三方账号</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="box">
+                               <div class="content">
+                                    <div class="social">
+                                        <a class="circle github" href="#">
+                                            <i class="fa fa-qq fa-fw"></i>
+                                        </a>
+                                        <a id="google_login" class="circle google" href="#">
+                                            <i class="fa fa-weibo fa-fw"></i>
+                                        </a>
+                                        <a id="facebook_login" class="circle facebook" href="#">
+                                            <i class="fa fa-wechat fa-fw"></i>
+                                        </a>
+                                    </div>
+                                  <div class="division">
+                                      <div class="line l"></div>
+                                        <span>or</span>
+                                      <div class="line r"></div>
+                                  </div>
+                                  <div class="error"></div>
+                                  <div class="form loginBox">
+                                      <form method="get" action="../login/" accept-charset="UTF-8">
+                                      <input id="l_email" class="form-control" type="text" placeholder="用户邮箱" name="email">
+                                      <input id="l_password" class="form-control" type="password" placeholder="密码" name="password">
+                                      <input class="btn btn-default btn-login" type="button" value="登录" onclick="loginAjax();">
+                                      </form>
+                                  </div>
+                               </div>
+                          </div>
+                          <div class="box">
+                              <div class="content registerBox" style="display:none;">
+                               <div class="form">
+                                  <form method="get" html="{:multipart=>true}" data-remote="true" action="../register/" accept-charset="UTF-8">
+                                        <input id="r_email" class="form-control" type="text" placeholder="用户邮箱" name="email">
+                                        <input id="r_nickname" class="form-control" type="text" placeholder="昵称" name="nickname">
+                                        <input id="r_password" class="form-control" type="password" placeholder="密码" name="password">
+                                        <input id="r_password_confirmation" class="form-control" type="password" placeholder="再次输入密码" name="password_confirmation">
+                                        <input class="btn btn-default btn-register" type="button" value="创建账号" name="commit" onclick="register_ajax();">
+                                  </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <div class="forgot login-footer">
+                              <span>o(*￣▽￣*)o
+                                   <a href="javascript: showRegisterForm();">创建一个账号</a>
+                              ?</span>
+                          </div>
+                          <div class="forgot register-footer" style="display:none">
+                               <span>已有账号？</span>
+                               <a href="javascript: showLoginForm();">登录</a>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            {% block content %}
+
+            {% endblock %}
+            <!---footer--->
+            <footer>
+                <div class="container">
+                    <div class="copyright">
+                        &copy; 2019 All right reserved. Designed by <a href="#" target="_blank">wjx.</a> - Press <a href="#" target="_blank" title="HERE">HERE</a> to Contact me
+                    </div>
+                </div>
+            </footer>
+
+            <!--back to top--->
+            <a style="display: none;" href="javascript:void(0);" class="scrollTop back-to-top" id="back-to-top">
+                <span><i aria-hidden="true" class="fa fa-angle-up fa-lg"></i></span>
+                <span>Top</span>
+            </a>
+
+        </div>
+    </body>
+</html>

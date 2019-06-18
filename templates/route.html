@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+    <section class="image-head-wrapper" style="background-image: url('{{ route.route_img_src }}');"></section>
+    <h5 class="page-header"></h5>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="blog-list">
+                    <h4>自由行信息</h4>
+                    <ul>
+                        <li><a><i class="fa fa-header"></i>名称:{{ route.route_name }}</a></li>
+                        <li><a><i class="fa fa-tag"></i>标签:{{ route.route_tag }}</a></li>
+                        <li><a><i class="fa fa-line-chart"> </i>已售:{{ route.route_has_saled }}</a></li>
+                        <li><a><i class="fa fa-money"> </i>价格:{{ route.route_price }}</a></li>
+                    </ul>
+                </div>
+                    <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    <h5 class="page-header"></h5>
+    {% ifnotequal hotel.hotel_price "" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="single-bottom comment-form">
+                    <h3>填写预定单</h3>
+                    <form action="#" method="post">
+                        <input id="o_name" type="text" class="form-control" name="name" placeholder="姓名" required="">
+                        <input id="o_id" type="text" class="form-control" name="id_card" placeholder="身份证号" required="">
+                        <input id="o_tel" type="text" class="form-control" name="tele" placeholder="电话号" required="">
+                        <textarea id="o_desc" class="form-control" name="message" placeholder="补充" required=""></textarea>
+                        <div class="col-md-12">
+                            <input id="button_main" type="button" class="submit-btn" value="预定">
+                        </div>
+                        <div class="col-md-12" style="margin-top: 20px">
+                            <div id="success" class="alert alert-info" style="display: none;">预定成功</div>
+                            <div id="not_success" class="alert alert-danger" style="display: none;">信息填写不正确</div>
+                        </div>
+                        <script>
+                            $("#button_main").click(function(){
+                                let route_id = {{ route.route_id }};
+                                let name = $("#o_name").val();
+                                let id = $("#o_id").val();
+                                let tel = $("#o_tel").val();
+                                let desc = $("#o_desc").val();
+                                let data = {
+                                    route_id: route_id,
+                                    name: name,
+                                    id: id,
+                                    tel: tel,
+                                    desc: desc
+                                };
+                                if(id.length != 18 || tel.length !=11){
+                                    $("#not_success").show()
+                                } else if(!/^[0-9]+$/.test(id) || !/^[0-9]+$/.test(tel)){
+                                    $("#not_success").show()
+                                }else if( name == ""){
+                                    $("#not_success").show()
+                                } else{
+                                    $.post("../orderRoute",data,function (data) {
+                                        console.log(data.ok)
+                                        console.log(data)
+                                        if(data.ok == 1){
+                                            $('#success').show()
+                                        } else {
+                                            $("#not_success").show()
+                                        }
+                                    },"json")
+                                }
+                            })
+                        </script>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endifnotequal %}
+        <div class="container">
+        <div class="row">
+            <div class="blog-list">
+            <h4>评论</h4>
+                <ul>
+                    {% if comments_empty %}
+                        <li><a>暂无评论</a></li>
+                    {% else %}
+                        {% for comment in comments %}
+                            <li><a><i class="fa fa-user"></i>{{ comment.user.user_nick }}<br/><br/>{{ comment.route_comment_content }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% if login %}
+    <h5 class="page-header"></h5>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="single-bottom comment-form">
+                    <h3>添加评论</h3>
+                    <form action="#" method="post">
+                        <textarea id="c_comment" class="form-control" name="message" value="" placeholder="留下您的评论吧......" required=""></textarea>
+                        <div class="col-md-12">
+                            <input id="button_comment" type="button" class="submit-btn" value="评论">
+                        </div>
+                    </form>
+                    <script>
+                        $("#button_comment").click(function(){
+                            let route_id = {{ route.route_id }};
+                            let comment = $("#c_comment").val();
+                            let data = {
+                                route_id: route_id,
+                                comment: comment,
+                            };
+                            if(comment == ""){
+                                    $("#not_success_2").show()
+                            }else{
+                                $.post("../commentRoute",data,function (data) {
+                                        console.log(data.ok)
+                                        console.log(data)
+                                        if(data.ok == 1){
+                                            location.reload();
+                                        } else {
+                                            $("#not_success").show()
+                                        }
+                                    },"json");
+                            }
+                        });
+                    </script>
+                    <div class="col-md-12" style="margin-top: 20px">
+                        <div id="not_success_2" class="alert alert-danger" style="display: none;">信息填写不正确</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <h5 class="page-header"></h5>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>景点|{{ attraction.attraction_name }}</title>
+{% endblock %}
+{% block content %}
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10 col-sm-8 col-xs-12">
+                    <h2 class="blog-title-head"><b>{{ attraction.attraction_name }}</b></h2>
+                    <p class="user-info">{{ attraction.attraction_en_name }}</p>
+                </div>
+            </div>
+            <section class="image-head-wrapper" style="background-image: url('{{ attraction.attraction_img }}');">
+            </section>
+            <h5 class="page-header"></h5>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-8 col-xs-12">
+                        <h3 class="blog-title-head">简介</h3>
+                        <p class="blog-desc">{{ attraction.attraction_desc }} </p>
+                        <h3 class="blog-title-head">交通</h3>
+                            <p class="blog-desc">{{ attraction.attraction_traffic }}</p>
+                    </div>
+                    <aside class="col-md-3 col-sm-4 col-xs-12">
+                        <div class="blog-list">
+                            <h4>景点信息</h4>
+                            <ul>
+                                <li><a><i class="fa fa-phone"> </i>电话<br>{{ attraction.attraction_tele }}</a></li>
+                                <li><a><i class="fa fa-chrome"> </i>网站<br>{{ attraction.attraction_site }}</a></li>
+                                <li><a><i class="fa fa-calendar-o"> </i>推荐用时:{{ attraction.attraction_use_time }}</a></li>
+                                <li><a><i class="fa fa-calendar-check-o"> </i>开放时间<br>{{ attraction.attraction_open_time }}</a></li>
+                                <li><a><i class="fa fa-line-chart"></i>省内热度排名: {{ attraction.attraction_rank }}</a></li>
+                            </ul>
+
+                            <div class="clearfix"> </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+            <h5 class="page-header"></h5>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10 col-sm-8 col-xs-12">
+                    <h3 class="blog-title-head"><b>附近&热门酒店</b></h3>
+                </div>
+            </div>
+            <section class="resort-overview-block">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 remove-padd-right">
+                            <div class="side-A">
+                                <div class="product-thumb">
+                                    <div class="image">
+                                        <div style="height:300px;width:250px;">
+                                            <div style="width:100%;height:100%;background-image:url({{ hotel_list.0.hotel_img_src }});background-size:cover;background-position:50%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side-B">
+                                <div class="product-desc-side">
+                                    <h3><a>{{ hotel_list.0.hotel_name }}</a></h3>
+                                    <p>{{ hotel_list.0.hotel_position }}</p>
+                                    <p>{{ hotel_list.0.hotel_house_name }}</p>
+                                    <div class="links"><a href="../getHotel?hotel_id={{hotel_list.0.hotel_id}}">查看详情</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 remove-padd-left">
+                            <div class="side-A">
+                                <div class="product-thumb">
+                                    <div class="image">
+                                        <div style="height:300px;width:250px;">
+                                            <div style="width:100%;height:100%;background-image:url({{ hotel_list.1.hotel_img_src }});background-size:cover;background-position:50%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side-B">
+                                <div class="product-desc-side">
+                                    <h3><a>{{ hotel_list.1.hotel_name }}</a></h3>
+                                    <p>{{ hotel_list.1.hotel_position }}</p>
+                                    <p>{{ hotel_list.1.hotel_house_name }}</p>
+                                    <div class="links"><a href="../getHotel?hotel_id={{hotel_list.1.hotel_id}}">查看详情</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 remove-padd-right">
+                            <div class="side-A">
+                                <div class="product-desc-side">
+                                    <h3><a>{{ hotel_list.2.hotel_name }}</a></h3>
+                                    <p>{{ hotel_list.2.hotel_position }}</p>
+                                    <p>{{ hotel_list.2.hotel_house_name }}</p>
+                                    <div class="links"><a href="../getHotel?hotel_id={{hotel_list.2.hotel_id}}">查看详情</a></div>
+                                </div>
+                            </div>
+
+                            <div class="side-B">
+                                <div class="product-thumb">
+                                    <div class="image txt-rgt">
+                                        <div style="height:300px;width:250px;">
+                                            <div style="width:100%;height:100%;background-image:url({{  hotel_list.2.hotel_img_src }});background-size:cover;background-position:50%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 remove-padd-left">
+                            <div class="side-A">
+                                <div class="product-desc-side">
+                                    <h3><a>{{ hotel_list.3.hotel_name }}</a></h3>
+                                    <p>{{ hotel_list.3.hotel_position }}</p>
+                                    <p>{{ hotel_list.3.hotel_house_name }}</p>
+                                    <div class="links"><a href="../getHotel?hotel_id={{hotel_list.3.hotel_id}}">查看详情</a></div>
+                                </div>
+                            </div>
+
+                            <div class="side-B">
+                                <div class="product-thumb txt-rgt">
+                                    <div class="image">
+                                        <div style="height:300px;width:250px;">
+                                            <div style="width:100%;height:100%;background-image:url({{  hotel_list.3.hotel_img_src }});background-size:cover;background-position:50%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </section>
+            <h5 class="page-header"></h5>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10 col-sm-8 col-xs-12">
+                    <h3 class="blog-title-head"><b>相关&热门游记</b></h3>
+                </div>
+            </div>
+            <section class="blog-block">
+                <div class="container">
+                    {% for travels in travels_list %}
+                    <div class="row offspace-45">
+                        <div class="view-set-block">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="event-blog-image">
+                                    <img alt="image" class="img-responsive" src="{{ travels.travels_img_url }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 side-in-image">
+                                <div class="event-blog-details">
+                                    <h4><a href="../getTravels?travels_id={{travels.travels_id}}">{{ travels.travels_name}}</a></h4>
+                                    <h5>Post By 匿名 <a><i aria-hidden="true" class="fa fa-eye fa-lg"></i>{{ travels.travels_view_num}}</a></h5>
+                                    <p>{{ travels.travels_content_cut}}</p>
+                                    <a class="btn btn-default" href="../getTravels?travels_id={{travels.travels_id}}">阅读全文</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+{% endblock %}

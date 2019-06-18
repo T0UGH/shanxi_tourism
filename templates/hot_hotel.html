@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <form  method = 'get' action = '../hotelSearchResult'>
+        <div class="col-md-8">
+            <div class="input-group">
+                <input id="text" type="text" name="s_str" class="form-control" placeholder="请输入酒店名称或位置">
+                <span class="input-group-btn">
+                    <button id="search" class="btn btn-default" type="submit">搜索</button>
+                </span>
+            </div>
+        </div>
+        </form>
+    </div>
+    {% for result in results %}
+        <h5 class="page-header"></h5>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-3 col-sm-8 col-xs-12">
+                <div style="height:200px;width:300px;">
+                        <div style="width:100%;height:100%;background-image:url({{ result.hotel_img_src }});background-size:cover;background-position:50%;"></div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-8 col-xs-12">
+                <div class="blog-list">
+                    <h4><a href="../getHotel?hotel_id={{ result.hotel_id }}">{{ result.hotel_name }}</a></h4>
+                    <ul>
+                        <li><a><i class="fa fa-location-arrow"></i>{{ result.hotel_position }}</a></li>
+                        <li><a><i class="fa fa-calendar-minus-o"> </i>入住时间:{{ result.hotel_in_time }}</a></li>
+                        <li><a><i class="fa fa-calendar-plus-o"> </i>离店时间:{{ result.hotel_out_time }}</a></li>
+                        <li><a><i class="fa fa-cog"> </i>建成于:{{ result.hotel_build_time }}</a></li>
+                        <li><a><i class="fa fa-home"> </i>酒店规模:{{ result.hotel_size }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li class="previous"><a href="../hotHotel?page={{ pre_page }}"><span aria-hidden="true">&larr;</span> 上页</a></li>
+                    <li class="next"><a href="../hotHotel?page={{ next_page }}">下页 <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}

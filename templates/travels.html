@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+            <section class="image-head-wrapper" style="background-image: url('{{ travels.travels_img_url }}');">
+            </section>
+            <div class="clearfix"></div>
+            <section class="about-block">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-1 about-left"></div>
+                        <div class="col-md-4 about-left">
+                            <p><b>{{ travels.travels_name }}</b></p>
+                            <ul class="list-unstyled list-inline">
+                                <li></li><br>
+                                <li></li><br>
+                                <li><i class="fa fa-location-arrow" style="color:#ff4157"></i>   <strong>景点:</strong> {{ attraction.attraction_name }}</li><br>
+                                <li><i class="fa fa-eye" style="color:#ff4157"></i>   <strong>观看:</strong>  {{ travels.travels_view_num }}</li><br>
+                                <li><i class="fa fa-user" style="color:#ff4157"></i>   <strong>作者:</strong>  匿名</li><br>
+                                <li><i class="fa fa-calendar" style="color:#ff4157"></i>   <strong>时间:</strong>  未知</li><br>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 about-right">
+                            <p>{{ travels.travels_content }}</p>
+                        </div>
+                        <div class="col-md-1 about-right"></div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </section>
+{% endblock %}
+
+

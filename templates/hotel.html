@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 col-sm-8 col-xs-12">
+            <h2 class="blog-title-head"><b>{{ hotel.hotel_name }}</b></h2>
+        </div>
+    </div>
+    <section class="image-head-wrapper" style="background-image: url('{{ hotel.hotel_img_src }}?imageMogr2%2Fthumbnail%2F%21690x370r%2Fgravity%2FCenter%2Fcrop%2F%21690x370%2Fquality%2F100');"></section>
+    <h5 class="page-header"></h5>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="blog-list">
+                    <h4>酒店信息</h4>
+                    <ul>
+                        <li><a><i class="fa fa-location-arrow"></i>{{ hotel.hotel_position }}</a></li>
+                        <li><a><i class="fa fa-calendar-minus-o"> </i>入住时间:{{ hotel.hotel_in_time }}</a></li>
+                        <li><a><i class="fa fa-calendar-plus-o"> </i>离店时间:{{ hotel.hotel_out_time }}</a></li>
+                        <li><a><i class="fa fa-cog"> </i>建成于:{{ hotel.hotel_build_time }}</a></li>
+                        <li><a><i class="fa fa-home"> </i>酒店规模:{{ hotel.hotel_size }}</a></li>
+                    </ul>
+                </div>
+                    <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    <h5 class="page-header"></h5>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="blog-list">
+                    <h4>实时价格</h4>
+                    <ul>
+                        <li><a><i class="fa fa-line-chart"></i>{{ hotel.hotel_house_name }} {{ hotel.hotel_price }}</a></li>
+                    </ul>
+                </div>
+                    <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    <h5 class="page-header"></h5>
+    {% ifnotequal hotel.hotel_price "" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="single-bottom comment-form">
+                    <h3>填写预定单</h3>
+                    <form action="#" method="post">
+                        <input id="o_name" type="text" class="form-control" name="name" placeholder="姓名" required="">
+                        <input id="o_id" type="text" class="form-control" name="id_card" placeholder="身份证号" required="">
+                        <input id="o_tel" type="text" class="form-control" name="tele" placeholder="电话号" required="">
+                        <div class="form-group"  style="margin-top: 20px">
+                            <select class="form-control" id="select">
+                              <option data-hidden="true" value="0" disable>房型</option>
+                              <option value="1">{{ hotel.hotel_house_name }} {{ hotel.hotel_price }}</option>
+                            </select>
+                        </div>
+                        <textarea class="form-control" id="desc" name="message" placeholder="补充" required=""></textarea>
+                        <div class="col-md-2" style="margin-top: 20px">
+                                <h4>到店日期</h4>
+                        </div>
+                        <div class="form-group col-md-4" style="margin-top: 20px">
+                            <div id="startdiv" class="input-group date form_date" data-date="2019-04-16" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                                <input style="margin-top: 0px" id="start" class="form-control" size="16" type="text" placeholder="请选择到店日期" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                            <input type="hidden" id="dtp_input1" value="" /><br/>
+                        </div>
+                        <div class="col-md-2" style="margin-top: 20px">
+                                <h4>离店日期</h4>
+                        </div>
+                        <div class="form-group col-md-4" style="margin-top: 20px">
+                            <div id="endDiv" class="input-group date form_date" data-date="2019-04-16" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                <input style="margin-top: 0px" id="end" class="form-control" size="16" type="text" placeholder="请选择离店日期" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                            <input type="hidden" id="dtp_input2" value="" /><br/>
+                        </div>
+
+                        <script type="text/javascript">
+
+                            $('.form_date').datetimepicker({
+                                 language:  'fr',
+                                 weekStart: 1,
+                                 todayBtn:  1,   //今日日期按钮
+                                 autoclose: 1,   //自动关闭
+                                 todayHighlight: 1,   //高亮今日日期
+                                 startView: 2,       //从日期视图开始
+                                 minView: 2,
+                                 forceParse: 0
+                             });
+                            $('#startdiv').unbind("change");
+                            $('#startdiv').change(function(){
+                                $('#endDiv').datetimepicker('setStartDate', $("#start").val());
+                            });
+                            $('#endDiv').unbind("change");
+                            $('#endDiv').change(function(){
+                                $('#startdiv').datetimepicker('setEndDate', $("#end").val());
+                            });
+                        </script>
+                        <div class="col-md-12">
+                            <input id="button_main" type="button" class="submit-btn" value="预定">
+                        </div>
+                        <div class="col-md-12" style="margin-top: 20px">
+                            <div id="success" class="alert alert-info" style="display: none;">预定成功</div>
+                            <div id="not_success" class="alert alert-danger" style="display: none;">信息填写不正确</div>
+                        </div>
+                        <script>
+                            $("#button_main").click(function(){
+                                let hotel_id = {{ hotel.hotel_id }};
+                                let name = $("#o_name").val();
+                                let start = $("#start").val();
+                                let end = $("#end").val();
+                                let id = $("#o_id").val();
+                                let tel = $("#o_tel").val();
+                                let desc = $("#desc").val();
+                                let select = $("#select").val();
+                                console.log(start);
+                                console.log(end);
+                                let data = {
+                                    name: name,
+                                    start: start,
+                                    end: end,
+                                    id: id,
+                                    tel: tel,
+                                    hotel_id: hotel_id,
+                                    desc: desc,
+                                    select: select
+                                }
+                                if(id.length != 18 || tel.length !=11){
+                                    $("#not_success").show()
+                                } else if(!/^[0-9]+$/.test(id) || !/^[0-9]+$/.test(tel)){
+                                    $("#not_success").show()
+                                }else if( end == null || start == null || name == ""){
+                                    $("#not_success").show()
+                                } else{
+                                    $.post("../orderHotel",data,function (data) {
+                                        console.log(data.ok)
+                                        console.log(data)
+                                        if(data.ok == 1){
+                                            $('#success').show()
+                                        } else {
+                                            $("#not_success").show()
+                                        }
+                                    },"json")
+                                }
+                            })
+                        </script>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        <h5 class="page-header"></h5>
+    {% endifnotequal %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="blog-list">
+                <h4>评论</h4>
+                    <ul>
+                        {% if comments_empty %}
+                            <li><a>暂无评论</a></li>
+                        {% else %}
+                            {% for comment in comments %}
+                                <li><a><i class="fa fa-user"></i>{{ comment.user.user_nick }}<br/><br/>{{ comment.hotel_comment_content }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if login %}
+    <h5 class="page-header"></h5>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 col-sm-8 col-xs-12">
+                <div class="single-bottom comment-form">
+                    <h3>添加评论</h3>
+                    <form action="#" method="post">
+                        <textarea id="c_comment" class="form-control" name="message" value="" placeholder="留下您的评论吧......" required=""></textarea>
+                        <div class="col-md-12">
+                            <input id="button_comment" type="button" class="submit-btn" value="评论">
+                        </div>
+                    </form>
+                    <script>
+                        $("#button_comment").click(function(){
+                            let hotel_id = {{ hotel.hotel_id }};
+                            let comment = $("#c_comment").val();
+                            let data = {
+                                hotel_id: hotel_id,
+                                comment: comment,
+                            };
+                            if(comment == ""){
+                                    $("#not_success_2").show()
+                            }else{
+                                $.post("../commentHotel",data,function (data) {
+                                        console.log(data.ok)
+                                        console.log(data)
+                                        if(data.ok == 1){
+                                            location.reload();
+                                        } else {
+                                            $("#not_success").show()
+                                        }
+                                    },"json");
+                            }
+                        });
+                    </script>
+                    <div class="col-md-12" style="margin-top: 20px">
+                        <div id="not_success_2" class="alert alert-danger" style="display: none;">信息填写不正确</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <form  method = 'get' action = '../attractionSearchResult'>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input id="text" type="text" name="s_str" class="form-control" placeholder="请输入景点">
+                    <span class="input-group-btn">
+                        <button id="search" class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% for result in results %}
+        <h5 class="page-header"></h5>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-3 col-sm-8 col-xs-12">
+                <div style="height:200px;width:300px;">
+                        <div style="width:100%;height:100%;background-image:url({{ result.attraction_img }});background-size:cover;background-position:50%;"></div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-8 col-xs-12">
+                <div class="blog-list">
+                    <h4><a href="../getAttraction?attraction_id={{ result.attraction_id }}">{{ result.attraction_name }}</a></h4>
+                    <ul>
+                        <li><a><i class="fa fa-phone"> </i>电话<br>{{ result.attraction_tele }}</a></li>
+                        <li><a><i class="fa fa-chrome"> </i>网站<br>{{ result.attraction_site }}</a></li>
+                        <li><a><i class="fa fa-calendar-o"> </i>推荐用时:{{ result.attraction_use_time }}</a></li>
+                        <li><a><i class="fa fa-calendar-check-o"> </i>开放时间<br>{{ result.attraction_open_time }}</a></li>
+                        <li><a><i class="fa fa-line-chart"></i>省内热度排名: {{ result.attraction_rank }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li class="previous"><a href="../hotAttraction?page={{ pre_page }}"><span aria-hidden="true">&larr;</span> 上页</a></li>
+                    <li class="next"><a href="../hotAttraction?page={{ next_page }}">下页 <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
